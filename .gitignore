@@ -1,0 +1,7 @@
+envs/python*/bin
+envs/python*/lib
+envs/python*/.Python
+envs/python*/include
+envs/python*/pip-selfcheck.json
+*.pyc
+.idea
