@@ -51,12 +51,12 @@ if not circuit.did_succeed():
 This repository is set up to be installable as a pip package. "Releases" are denoted as tags on commits to provide versioning. To include in your project, add The following line to your `requirements.txt` file:
 
 ```bash
-git+https://bitbucket.org/zorotools/circuit_breaker.git@{{version_tag_name}}
+git+https://github.com/zorotools/circuitbreaker.git@{{version_tag_name}}
 ```
 
 You can also install it directly with
 ```bash
-pip install git+https://bitbucket.org/zorotools/circuit_breaker.git@{{version_tag_name}}
+pip install git+https://github.com/zorotools/circuitbreaker.git@{{version_tag_name}}
 ```
 However, note that a `pip freeze` afterward will include only the name of the package, not its BitBucket URL, which is not enough for installation from a requirements file.
 
