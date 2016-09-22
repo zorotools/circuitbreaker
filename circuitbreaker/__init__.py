@@ -1,1 +1,1 @@
-from circuitbreaker import CircuitBreaker, Endpoint
+from .circuitbreaker import CircuitBreaker, Endpoint
