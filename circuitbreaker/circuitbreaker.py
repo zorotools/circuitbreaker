@@ -1,6 +1,5 @@
 import redis
 import os
-import graypy
 import logging
 
 
@@ -39,22 +38,15 @@ def set_up_redis(redis_config=None):
         REDIS_CONNECTOR = redis.StrictRedis(host=redis_host, port=redis_port, db=0, password=redis_pass, socket_timeout=redis_timeout)
 
 
-def set_up_logger(config=None, level=logging.INFO):
+def set_up_logger(config=None):
     global LOGGER
-    if not LOGGER:
-        # if an existing logger was passed in, use it
-        if config:
-            LOGGER = config
-            return
-        # else check for Graylog environment variables, defaulting to Zoro's main Graylog server
-        else:
-            logger = logging.getLogger('circuit_breaker')
-            logger.setLevel(level)
-            graylog_host = os.environ.get('CB_LOGGER_HOSTNAME', 'localhost')
-            graylog_port = int(os.environ.get('CB_LOGGER_PORT', 12201))
-            handler = graypy.GELFHandler(graylog_host, graylog_port)
-            logger.addHandler(handler)
-            LOGGER = logger
+    # if an existing logger was passed in, use it
+    if config:
+        LOGGER = config
+    # if a global logger doesn't already exist, set up a dummy logger
+    elif not LOGGER:
+        logger = logging.getLogger(__name__)
+        LOGGER = logger
 
 
 class CircuitBreaker(object):

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zorocircuitbreaker',
-    version='0.9.3',
+    version='0.9.4',
     description='An implementation of the circuit breaker pattern',
     url='https://www.bitbucket.com/zorotools/circuit-breaker/',
     author='Zoro',

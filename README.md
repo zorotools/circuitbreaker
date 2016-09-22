@@ -58,7 +58,7 @@ You can also install it directly with
 ```bash
 pip install git+https://github.com/zorotools/circuitbreaker.git@{{version_tag_name}}
 ```
-However, note that a `pip freeze` afterward will include only the name of the package, not its BitBucket URL, which is not enough for installation from a requirements file.
+However, note that a `pip freeze` afterward will include only the name of the package, not its GitHub URL, which is not enough for installation from a requirements file.
 
 Once the package has been installed, you can access the `CircuitBreaker` class by importing it from the `circuitbreaker` module:
 
@@ -82,7 +82,7 @@ from circuitbreaker import CircuitBreaker
     * `port` should contain the port number on which the Redis server is listening
     * `pass` should contain the password that the Redis server will use for authentication (if the Redis server does not expect a password, this key can be excluded)
   * If the type of the supplied argument does not match any of the above types, it will be assumed that the supplied argument is an already-instantiated object that follows the Redis API and can be used directly as a Redis connection.
-* `logger_config` expects a `logging.Logger` type object which will be used to write any log messages the circuit breaker needs to create. If no value is supplied, the circuit breaker will attempt to connect to a Graylog server using environment variables `CB_LOGGER_HOSTNAME` and `CB_LOGGER_PORT`.
+* `logger_config` expects a `logging.Logger` type object which will be used to write any log messages the circuit breaker needs to create.
 
 ### get_next_endpoint()
 `for endpoint in circuit.get_next_endpoint():`
