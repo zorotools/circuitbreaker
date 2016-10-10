@@ -7,6 +7,6 @@ setup(
     url='https://www.bitbucket.com/zorotools/circuit-breaker/',
     author='Zoro',
     author_email='zoroengineering@zoro.com',
-    install_requires=['hiredis>=0.2.0', 'redis>=2.10.5'],
+    install_requires=['hiredis>=0.2.0', 'redis>=2.10.5', 'mockredis'],
     packages=['circuitbreaker']
 )
