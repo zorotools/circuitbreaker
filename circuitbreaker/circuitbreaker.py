@@ -51,7 +51,7 @@ def set_up_logger(config=None):
 
 class CircuitBreaker(object):
     def __init__(self, endpoints, redis_config=None, logger_config=None):
-        self._endpoints = endpoints
+        self._endpoints = endpoints[:]
         self._endpoint = None
         self._complete = False
         self._prefix = ''
