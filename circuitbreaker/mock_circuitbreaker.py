@@ -1,7 +1,7 @@
 import mockredis
 
 
-class CircuitBreaker(object):
+class MockCircuitBreaker(object):
     def __init__(self, endpoints, redis_config=None, logger_config=None):
         self.redis_config = redis_config
         self.redis = self.set_up_redis()
