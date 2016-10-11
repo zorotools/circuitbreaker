@@ -10,6 +10,13 @@ class MockCircuitBreaker(object):
         self._endpoint = None
         self._complete = True
 
+    def get_endpoints_name(self):
+        names = []
+        for endpoint in self._endpoints:
+            for key, value in endpoint.items():
+                names.append(key)
+        return names
+
     def get_next_endpoint(self):
         with self._endpoints or self._endpoint:
             if self._endpoint and isinstance(self._endpoint, dict):
@@ -17,8 +24,8 @@ class MockCircuitBreaker(object):
                 if self._endpoint.get(endpoint_name[0]) == 'healthy':
                     yield endpoint_name[0]
             else:
+                endpoint_name = self.get_endpoints_name()
                 for index, endpoint in enumerate(self._endpoints):
-                    endpoint_name = list(endpoint.keys())
                     if endpoint.get(endpoint_name[index]) == 'healthy':
                         yield endpoint_name[index]
 
