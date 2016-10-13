@@ -18,16 +18,18 @@ class MockCircuitBreaker(object):
         return names
 
     def get_next_endpoint(self):
-        with self._endpoints or self._endpoint:
-            if self._endpoint and isinstance(self._endpoint, dict):
-                endpoint_name = self._endpoint.keys()
-                if self._endpoint.get(endpoint_name[0]) == 'healthy':
-                    yield endpoint_name[0]
-            else:
-                endpoint_name = self.get_endpoints_name()
-                for index, endpoint in enumerate(self._endpoints):
-                    if endpoint.get(endpoint_name[index]) == 'healthy':
-                        yield endpoint_name[index]
+        while self._endpoints or self._endpoint:
+            if self._endpoint and isinstance(self._endpoint, list):
+                yield self._endpoint.name
+            for endpoint in self._endpoints:
+                if isinstance(endpoint, str):
+                    yield self._endpoints.pop(0)
+                if isinstance(endpoint, dict):
+                    endpoint_name = self.get_endpoints_name()
+                    for name in endpoint_name:
+                        if endpoint.get(name) == 'healthy':
+                            yield name
+            break
 
     @staticmethod
     def set_up_redis():
