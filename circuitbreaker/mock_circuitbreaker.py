@@ -1,5 +1,7 @@
 import mockredis
 
+UNHEALTHY_ENDPOINTS = []
+
 
 class MockCircuitBreaker(object):
     def __init__(self, endpoints, redis_config=None, logger_config=None):
@@ -9,27 +11,21 @@ class MockCircuitBreaker(object):
         self._endpoints = endpoints
         self._endpoint = None
         self._complete = True
+        self.unhealthy_endpoints = UNHEALTHY_ENDPOINTS
 
-    def get_endpoints_name(self):
-        names = []
-        for endpoint in self._endpoints:
-            for key, value in endpoint.items():
-                names.append(key)
-        return names
+    def is_active(self, endpoint):
+        if not self.unhealthy_endpoints:
+            return True
+        return endpoint not in self.unhealthy_endpoints
 
     def get_next_endpoint(self):
         while self._endpoints or self._endpoint:
-            if self._endpoint and isinstance(self._endpoint, list):
+            if self._endpoint:
                 yield self._endpoint.name
-            for endpoint in self._endpoints:
-                if isinstance(endpoint, str):
-                    yield self._endpoints.pop(0)
-                if isinstance(endpoint, dict):
-                    endpoint_name = self.get_endpoints_name()
-                    for name in endpoint_name:
-                        if endpoint.get(name) == 'healthy':
-                            yield name
-            break
+            else:
+                current_endpoint = self._endpoints.pop(0)
+                if self.is_active(current_endpoint):
+                    yield current_endpoint
 
     @staticmethod
     def set_up_redis():
