@@ -38,8 +38,8 @@ if __name__ == '__main__':
         status.extend([
             ('History Cases', len(history)),
             ('History Successes', successes),
-            ("History Success Rate", str(round(successes / float(len(history)) * 100, 2)) + "%"),
-            ("Failure Threshold", str(endpoint.settings['failure_threshold'] * 100) + "%")
+            ('History Success Rate', str(round(successes / float(len(history)) * 100, 2)) + "%"),
+            ('Failure Threshold', str(endpoint.settings['failure_threshold'] * 100) + "%")
         ])
     else:
         test_count = endpoint.redis.get(endpoint.name + ':test_count')
