@@ -46,10 +46,10 @@ if __name__ == '__main__':
         test_history = endpoint.redis.lrange(endpoint.name + ':test_history', 0, -1)
         successes = test_history.count(b'1')
         status.extend([
-            ('Test Count', test_count),
+            ('Test Count', int(test_count)),
             ('Test History Cases', len(test_history)),
             ('Test History Successes', successes),
-            ('Test History Success Rate', str(successes / round((float(len(test_history))) * 100, 2)) + "%"),
+            ('Test History Success Rate', str(round(successes / (float(len(test_history))) * 100, 2)) + "%"),
             ('Recovery Threshold', str(endpoint.settings['recovery_threshold'] * 100) + "%")
         ])
 
