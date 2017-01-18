@@ -35,21 +35,29 @@ if __name__ == '__main__':
     if is_healthy:
         history = endpoint.redis.lrange(endpoint.name + ':history', 0, -1)
         successes = history.count(b'1')
+        if history:
+            rate = str(round(successes / float(len(history)) * 100, 2)) + "%"
+        else:
+            rate = "N/A"
         status.extend([
             ('History Cases', len(history)),
             ('History Successes', successes),
-            ('History Success Rate', str(round(successes / float(len(history)) * 100, 2)) + "%"),
+            ('History Success Rate', rate),
             ('Failure Threshold', str(endpoint.settings['failure_threshold'] * 100) + "%")
         ])
     else:
         test_count = endpoint.redis.get(endpoint.name + ':test_count')
         test_history = endpoint.redis.lrange(endpoint.name + ':test_history', 0, -1)
         successes = test_history.count(b'1')
+        if test_history:
+            rate = str(round(successes / (float(len(test_history))) * 100, 2)) + "%"
+        else:
+            rate = "N/A"
         status.extend([
             ('Test Count', int(test_count)),
             ('Test History Cases', len(test_history)),
             ('Test History Successes', successes),
-            ('Test History Success Rate', str(round(successes / (float(len(test_history))) * 100, 2)) + "%"),
+            ('Test History Success Rate', rate),
             ('Recovery Threshold', str(endpoint.settings['recovery_threshold'] * 100) + "%")
         ])
 
