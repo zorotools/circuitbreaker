@@ -128,17 +128,19 @@ Creates a prefix to use when reading/writing endpoint data to the Redis database
 
 ## Edge Cases
 
-* The Redis connection is treated as a singleton. Once it has been established by the first instantiation of a `CircuitBreaker` object in any give Python process, instantiating a new `CircuitBreaker` with difference Redis connection details will result in the circuit breaker ignoring the new connection details and using the existing Redis connection.
+* The Redis connection is treated as a singleton. Once it has been established by the first instantiation of a `CircuitBreaker` object in any give Python process, instantiating a new `CircuitBreaker` with different Redis connection details will result in the circuit breaker ignoring the new connection details and using the existing Redis connection.
 
 * If a `CircuitBreaker` object fails to even connect to the Redis server, it will consider all endpoints invalid and calls to `circuit.get_next_endpoint()` will always return `None`. It will also delete the Redis connection singleton, so that the next `CircuitBreaker` instance will attempt to recreate it.
 
-* If a backup endpoint is marked as unhealthy, and the primary endpoint returns to full heath before or at the same time as the secondary endpoint, it will be very difficult the circuit breaker to return the backup endpoint to a healthy state, since it will no longer be receiving any traffic. To combat this, `reset.py` is included in this repository. It is a command line tool that allows you to manually reset any arbitrary endpoint name to a "healthy" or "unhealthy" state. Run `python reset.py --help` from the root directory of this repository for details.
+* If a backup endpoint is marked as unhealthy, and the primary endpoint returns to full heath before or at the same time as the secondary endpoint, it will be very difficult the circuit breaker to return the backup endpoint to a healthy state, since it will no longer be receiving any traffic. To combat this, `reset.py` is included in this repository. It is a command line tool that allows you to manually reset any arbitrary endpoint name to a "healthy" or "unhealthy" state. Run `python reset.py --help` from the root directory of this repository for details on usage.
 
 ## Failure and recovery management
 
 This package uses a Redis database to keep track of health data associated with any endpoints users decide to create. Whenever an endpoint is used, its success or failure is added to a list of historic calls to that endpoint. If the success percentage of items in that list falls below a user-defined level, that endpoint will be marked as unhealthy. If a new `CircuitBreaker` instance is created with the now-unhealthy endpoint in its list of possible endpoints, it will be skipped and the next endpoint in the list will be checked.
 
 Once an endpoint has been marked as unhealthy, it will occasionally (at a user-defined interval) be marked as "testing", which generally means it will be treated as if it were healthy. The only difference is the successes and failures will be tracked in a separate history list. If that separate history list reaches a user-defined success percentage threshold, the endpoint will be assumed to have recovered, and will be marked as healthy.
+
+To view the detailed heath status of an endpoint, the command line tool `status.py` is included with this repository. Given an endpoint name, it will print a formatted table of the endpoint's current health status and request history, along with its threshold settings. Run `python status.py --help` from the root directory of this repository for details on usage.
 
 ## Advanced configuration
 
