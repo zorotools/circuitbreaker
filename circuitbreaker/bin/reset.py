@@ -5,7 +5,7 @@ import sys
 from circuitbreaker.circuitbreaker import Endpoint
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description='Resets an endpoint\'s history and marks it as "healthy" or "unhealthy"')
     parser.add_argument('-H', '--host', dest='host', metavar=('hostname'), default='localhost',
                         help='Specify which Redis host to connect to. Defaults to "localhost"')
@@ -31,3 +31,7 @@ if __name__ == '__main__':
         endpoint._fail()
     else:
         endpoint._recover()
+
+
+if __name__ == '__main__':
+    main()

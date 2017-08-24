@@ -14,7 +14,7 @@ def get_rate(numerator, denominator):
     return rate
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description='Check the current status of an endpoint')
     parser.add_argument('-H', '--host', dest='host', metavar=('hostname'), default='localhost',
                         help='Specify which Redis host to connect to. Defaults to "localhost"')
@@ -62,3 +62,7 @@ if __name__ == '__main__':
         ])
 
     print(tabulate(status, tablefmt="fancy_grid"))
+
+
+if __name__ == '__main__':
+    main()
