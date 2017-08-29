@@ -16,13 +16,13 @@ def get_rate(numerator, denominator):
 
 def main():
     parser = argparse.ArgumentParser(description='Check the current status of an endpoint')
-    parser.add_argument('-H', '--host', dest='host', metavar=('hostname'), default='localhost',
-                        help='Specify which Redis host to connect to. Defaults to "localhost"')
+    parser.add_argument('-H', '--host', dest='host', metavar=('hostname'), required=True,
+                        help='Specify which Redis host to connect to')
     parser.add_argument('-p', '--port', dest='port', metavar=('port'), default=6379,
                         help='Specify the port to use for connecting to the Redis host. Defaults to 6379')
     parser.add_argument('-P', '--password', dest='password', metavar=('password'), default=None,
                         help='Specify a password to use when connecting to the Redis host. Defaults to None')
-    parser.add_argument('-e', '--endpoint', dest='endpoint', metavar=('endpoint'),
+    parser.add_argument('-e', '--endpoint', dest='endpoint', metavar=('endpoint'), required=True,
                         help='The enpoint name to check')
     args = parser.parse_args()
 
